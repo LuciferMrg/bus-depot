@@ -7,21 +7,19 @@ const UserDto = require("../dtos/user-dto");
 const ErrorHandler = require('../utils/error-handler');
 
 exports.register = async (username, password) => {
-    try {
-        const user = await UserModel.create({
-            username,
-            password
-        });
-    } catch (error) {
-        throw ErrorHandler.BadRequest("A user with the same name already exists.");
-    }
+    const user = await UserModel.create({
+        username,
+        password
+    }).catch((error) => {
+        throw ErrorHandler.BadRequest("A user with the same name already exists.", error)
+    });
     const userDto = new UserDto(user);
 
     const refreshToken = TokenController.generateToken({...userDto});
     await TokenController.saveToken(userDto.id, refreshToken);
 
     return {
-        token: ['refreshToken', refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true}],
+        token: TokenController.tokenToCookie(refreshToken),
         user: userDto
     };
 };
@@ -42,7 +40,7 @@ exports.login = async (username, password) => {
     await TokenController.saveToken(userDto.id, refreshToken);
 
     return {
-        token: ['refreshToken', refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true}],
+        token: TokenController.tokenToCookie(refreshToken),
         user: userDto
     };
 }
@@ -62,7 +60,7 @@ exports.refresh = async (refreshToken) => {
     await TokenController.saveToken(userDto.id, token);
 
     return {
-        token: ['refreshToken', token, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true}],
+        token: TokenController.tokenToCookie(refreshToken),
         user: userDto
     };
 }

@@ -34,3 +34,7 @@ exports.findToken = async (refreshToken) => {
     const tokenData = await tokenModel.findOne({refreshToken})
     return tokenData;
 }
+
+exports.tokenToCookie = (refreshToken) => {
+    return ['refreshToken', refreshToken, {httpOnly: true}];
+}
