@@ -20,7 +20,7 @@ exports.sendResult = (res, next, statusCode, result) => {
 };
 
 exports.sendError = (res, next, statusCode, error) => {
-    console.log(error);
+    if (statusCode === exports.STATUS_CODES.INTERNAL_SERVER_ERROR) console.log(error);
 
     res.status(statusCode).json({
         error: {
