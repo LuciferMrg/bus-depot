@@ -1,0 +1,31 @@
+exports.STATUS_CODES = {
+    CONTINUE: 100,
+    OK: 200,
+    SUCCESS: 200,
+    REDIRECTION: 300,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    INTERNAL_SERVER_ERROR: 500,
+    BAD_GATEWAY: 502,
+    NOT_EXTENDED: 510
+};
+
+
+exports.sendResult = (res, next, statusCode, result) => {
+    res.status(statusCode);
+    if ("token" in result) res.cookie(...result.token);
+    res.json(result);
+};
+
+exports.sendError = (res, next, statusCode, error) => {
+    console.log(error);
+
+    res.status(statusCode).json({
+        error: {
+            message: error.message || 'Internal Server Error',
+        }
+    });
+};
+
