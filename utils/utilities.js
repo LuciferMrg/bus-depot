@@ -12,6 +12,10 @@ exports.STATUS_CODES = {
     NOT_EXTENDED: 510
 };
 
+exports.ROLES = {
+    ADMIN: 'admin',
+    USER: 'user'
+};
 
 exports.sendResult = (res, next, statusCode, result) => {
     res.status(statusCode);
