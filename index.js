@@ -1,15 +1,13 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
+const app = require('./server')
 
-const userRoute = require('./routes/user-route');
+const connectDatabase = require('./config/database')
 
 
-const app = express();
+app.listen(process.env.PORT || 5000, process.env.HOST, (err) => {
+    if (err) {
+        return console.log(err);
+    }
 
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.urlencoded({extended: true}));
-
-app.use('/api', userRoute);
-
-module.exports = app;
+    connectDatabase();
+    console.log(`Server listens http://${process.env.HOST}:${process.env.PORT || 5000}`);
+});
