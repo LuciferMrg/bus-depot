@@ -15,11 +15,11 @@ exports.register = async (username, password) => {
     });
     const userDto = new UserDto(user);
 
-    const refreshToken = TokenController.generateToken({...userDto});
-    await TokenController.saveToken(userDto.id, refreshToken);
+    const accessToken = TokenController.generateToken({...userDto});
+    await TokenController.saveToken(userDto.id, accessToken);
 
     return {
-        token: TokenController.tokenToCookie(refreshToken),
+        token: TokenController.tokenToCookie(accessToken),
         user: userDto
     };
 };
@@ -36,23 +36,23 @@ exports.login = async (username, password) => {
     if (!isValidPass) throw ErrorHandler.BadRequest('Wrong login or password.');
     const userDto = new UserDto(user);
 
-    const refreshToken = TokenController.generateToken({...userDto});
-    await TokenController.saveToken(userDto.id, refreshToken);
+    const accessToken = TokenController.generateToken({...userDto});
+    await TokenController.saveToken(userDto.id, accessToken);
 
     return {
-        token: TokenController.tokenToCookie(refreshToken),
+        token: TokenController.tokenToCookie(accessToken),
         user: userDto
     };
 }
 
-exports.logout = async (refreshToken) => {
-    const removedToken = await TokenController.removeToken(refreshToken);
+exports.logout = async (accessToken) => {
+    const removedToken = await TokenController.removeToken(accessToken);
     if (!removedToken) throw ErrorHandler.BadRequest('Error logging out');
     return {removedToken};
 }
 
-exports.refresh = async (refreshToken) => {
-    const userData = TokenController.validateToken(refreshToken);
+exports.refresh = async (accessToken) => {
+    const userData = TokenController.validateToken(accessToken);
     const user = await UserModel.findById(userData.id);
     const userDto = new UserDto(user);
 
@@ -60,7 +60,7 @@ exports.refresh = async (refreshToken) => {
     await TokenController.saveToken(userDto.id, token);
 
     return {
-        token: TokenController.tokenToCookie(refreshToken),
+        token: TokenController.tokenToCookie(accessToken),
         user: userDto
     };
 }
@@ -71,8 +71,8 @@ exports.getAllUsers = async () => {
 }
 
 
-exports.getUser = async (refreshToken) => {
-    const user = await TokenModel.findOne({refreshToken}).populate('user');
+exports.getUser = async (accessToken) => {
+    const user = await TokenModel.findOne({accessToken}).populate('user');
 
     if (!user) throw ErrorHandler.NotFound('UserModel is not found.');
 

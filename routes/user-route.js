@@ -28,17 +28,17 @@ router.post('/sign-in', (req, res, next) => {
 });
 
 router.post('/logout', authMiddleware.isAuthenticated, (req, res, next) => {
-    const refreshToken = req.cookies.refreshToken;
+    const accessToken = req.cookies.accessToken;
 
-    UserController.logout(refreshToken)
+    UserController.logout(accessToken)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.get('/refresh', authMiddleware.isAuthenticated, (req, res, next) => {
-    const refreshToken = req.cookies.refreshToken;
+    const accessToken = req.cookies.accessToken;
 
-    UserController.refresh(refreshToken)
+    UserController.refresh(accessToken)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
@@ -50,9 +50,9 @@ router.get('/users', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLE
 });
 
 router.get('/user', authMiddleware.isAuthenticated, (req, res, next) => {
-    const refreshToken = req.cookies.refreshToken;
+    const accessToken = req.cookies.accessToken;
 
-    UserController.getUser(refreshToken)
+    UserController.getUser(accessToken)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });

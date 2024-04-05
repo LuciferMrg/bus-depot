@@ -7,11 +7,11 @@ const {sendError, STATUS_CODES} = require('../utils/utilities');
 // module.exports = (role) => {
 //     return async function (req, res, next) {
 //         try {
-//             const refreshToken = req.cookies.refreshToken;
-//             const userData = validateToken(refreshToken);
-//             const tokenFromDb = await findToken(refreshToken);
+//             const accessToken = req.cookies.accessToken;
+//             const userData = validateToken(accessToken);
+//             const tokenFromDb = await findToken(accessToken);
 //
-//             if (!refreshToken || !userData || !tokenFromDb) {
+//             if (!accessToken || !userData || !tokenFromDb) {
 //                 sendError(res, next, STATUS_CODES.UNAUTHORIZED, ErrorHandler.UnauthorizedError());
 //                 return;
 //             }
@@ -31,11 +31,11 @@ const {sendError, STATUS_CODES} = require('../utils/utilities');
 
 exports.isAuthenticated = async function (req, res, next) {
     try {
-        const refreshToken = req.cookies.refreshToken;
-        const userData = validateToken(refreshToken);
-        const tokenFromDb = await findToken(refreshToken);
+        const accessToken = req.cookies.accessToken;
+        const userData = validateToken(accessToken);
+        const tokenFromDb = await findToken(accessToken);
 
-        if (!userData || !tokenFromDb || !refreshToken) {
+        if (!userData || !tokenFromDb || !accessToken) {
             sendError(res, next, STATUS_CODES.UNAUTHORIZED, ErrorHandler.UnauthorizedError());
             return;
         }

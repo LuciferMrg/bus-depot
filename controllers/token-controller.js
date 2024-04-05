@@ -4,37 +4,37 @@ const tokenModel = require('../models/token-model');
 
 
 exports.generateToken = (payload) => {
-    return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {expiresIn: process.env.JWT_REFRESH_EXPIRES_TIME});
+    return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_TIME});
 }
 
-exports.validateToken = (refreshToken) => {
+exports.validateToken = (accessToken) => {
     try {
-        return jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+        return jwt.verify(accessToken, process.env.JWT_SECRET);
     } catch (e) {
         return null;
     }
 }
 
-exports.saveToken = async (userId, refreshToken) => {
+exports.saveToken = async (userId, accessToken) => {
     const tokenData = await tokenModel.findOne({user: userId});
     if (tokenData) {
-        tokenData.refreshToken = refreshToken;
+        tokenData.accessToken = accessToken;
         return tokenData.save();
     }
-    const token = await tokenModel.create({user: userId, refreshToken});
+    const token = await tokenModel.create({user: userId, accessToken});
     return token;
 }
 
-exports.removeToken = async (refreshToken) => {
-    const tokenData = await tokenModel.deleteOne({refreshToken});
+exports.removeToken = async (accessToken) => {
+    const tokenData = await tokenModel.deleteOne({accessToken});
     return Boolean(tokenData?.deletedCount);
 }
 
-exports.findToken = async (refreshToken) => {
-    const tokenData = await tokenModel.findOne({refreshToken})
+exports.findToken = async (accessToken) => {
+    const tokenData = await tokenModel.findOne({accessToken})
     return tokenData;
 }
 
-exports.tokenToCookie = (refreshToken) => {
-    return ['refreshToken', refreshToken, {httpOnly: true}];
+exports.tokenToCookie = (accessToken) => {
+    return ['accessToken', accessToken, {httpOnly: true}];
 }
