@@ -3,7 +3,7 @@ const TokenController = require('../controllers/token-controller');
 const UserModel = require('../models/user-model');
 const TokenModel = require('../models/token-model');
 
-const UserDto = require("../dtos/user-dto");
+const {UserDto} = require("../utils/utilities");
 const ErrorHandler = require('../utils/error-handler');
 
 exports.register = async (username, password) => {

@@ -17,6 +17,18 @@ exports.ROLES = {
     USER: 'user'
 };
 
+exports.UserDto = class {
+    username;
+    roles;
+    id;
+
+    constructor(model) {
+        this.username = model.username;
+        this.roles = model.roles;
+        this.id = model._id;
+    }
+}
+
 exports.sendResult = (res, next, statusCode, result) => {
     res.status(statusCode);
     if ("token" in result) res.cookie(...result.token);
