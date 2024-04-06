@@ -31,7 +31,7 @@ exports.removeToken = async (accessToken) => {
 }
 
 exports.findToken = async (accessToken) => {
-    const tokenData = await tokenModel.findOne({accessToken})
+    const tokenData = await tokenModel.findOne({accessToken});
     return tokenData;
 }
 

@@ -16,7 +16,7 @@ exports.register = async (username, password) => {
     const userDto = new UserDto(user);
 
     const accessToken = TokenController.generateToken({...userDto});
-    await TokenController.saveToken(userDto.id, accessToken);
+    await TokenController.saveToken(userDto._id, accessToken);
 
     return {
         token: TokenController.tokenToCookie(accessToken),
@@ -37,7 +37,7 @@ exports.login = async (username, password) => {
     const userDto = new UserDto(user);
 
     const accessToken = TokenController.generateToken({...userDto});
-    await TokenController.saveToken(userDto.id, accessToken);
+    await TokenController.saveToken(userDto._id, accessToken);
 
     return {
         token: TokenController.tokenToCookie(accessToken),
@@ -53,11 +53,11 @@ exports.logout = async (accessToken) => {
 
 exports.refresh = async (accessToken) => {
     const userData = TokenController.validateToken(accessToken);
-    const user = await UserModel.findById(userData.id);
+    const user = await UserModel.findById(userData._id);
     const userDto = new UserDto(user);
 
     const token = TokenController.generateToken({...userDto});
-    await TokenController.saveToken(userDto.id, token);
+    await TokenController.saveToken(userDto._id, token);
 
     return {
         token: TokenController.tokenToCookie(accessToken),

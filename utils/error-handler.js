@@ -1,4 +1,4 @@
-const {STATUS_CODES} = require('./utilities')
+const {STATUS_CODES} = require('./utilities');
 
 
 class ErrorHandler extends Error {

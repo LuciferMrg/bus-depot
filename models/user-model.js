@@ -1,23 +1,16 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const {ROLES} = require('../utils/utilities')
+const {ROLES} = require('../utils/utilities');
 
 
 const userSchema = new mongoose.Schema({
     username: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    roles: {
-        type: String,
-        enum: Object.values(ROLES),
-        default: ROLES.USER
+        type: String, required: true, unique: true
+    }, password: {
+        type: String, required: true
+    }, role: {
+        type: String, enum: Object.values(ROLES), default: ROLES.USER
     }
 }, {
     timestamps: true,

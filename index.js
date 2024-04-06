@@ -1,6 +1,6 @@
-const app = require('./server')
+const app = require('./server');
 
-const connectDatabase = require('./config/database')
+const connectDatabase = require('./config/database');
 
 
 app.listen(process.env.PORT || 5000, process.env.HOST, (err) => {
