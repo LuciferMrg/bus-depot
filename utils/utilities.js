@@ -1,3 +1,6 @@
+const bcrypt = require("bcrypt");
+
+
 exports.STATUS_CODES = {
     CONTINUE: 100,
     OK: 200,
@@ -9,12 +12,12 @@ exports.STATUS_CODES = {
     NOT_FOUND: 404,
     INTERNAL_SERVER_ERROR: 500,
     BAD_GATEWAY: 502,
-    NOT_EXTENDED: 510
+    NOT_EXTENDED: 510,
 };
 
 exports.ROLES = {
     ADMIN: 'admin',
-    USER: 'user'
+    USER: 'user',
 };
 
 exports.UserDto = class {
@@ -39,7 +42,11 @@ exports.sendError = (res, next, statusCode, error) => {
     res.status(statusCode).json({
         error: {
             message: error.message || 'Internal Server Error',
-        }
+        },
     });
+};
+
+exports.comparePassword = async function (enteredPassword, password) {
+    return await bcrypt.compare(enteredPassword, password);
 };
 

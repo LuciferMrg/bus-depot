@@ -3,15 +3,15 @@ const TokenController = require('../controllers/token-controller');
 const UserModel = require('../models/user-model');
 const TokenModel = require('../models/token-model');
 
-const {UserDto} = require("../utils/utilities");
+const {UserDto, comparePassword} = require("../utils/utilities");
 const ErrorHandler = require('../utils/error-handler');
 
 exports.register = async (username, password) => {
     const user = await UserModel.create({
         username,
-        password
+        password,
     }).catch((error) => {
-        throw ErrorHandler.BadRequest("A user with the same name already exists.", error)
+        throw ErrorHandler.BadRequest("A user with the same name already exists.", error);
     });
     const userDto = new UserDto(user);
 
@@ -20,7 +20,7 @@ exports.register = async (username, password) => {
 
     return {
         token: TokenController.tokenToCookie(accessToken),
-        user: userDto
+        user: userDto,
     };
 };
 
@@ -31,7 +31,7 @@ exports.login = async (username, password) => {
 
     if (!user) throw ErrorHandler.BadRequest('Wrong login or password.');
 
-    const isValidPass = await user.comparePassword(password);
+    const isValidPass = await comparePassword(password, user.password);
 
     if (!isValidPass) throw ErrorHandler.BadRequest('Wrong login or password.');
     const userDto = new UserDto(user);
@@ -41,15 +41,15 @@ exports.login = async (username, password) => {
 
     return {
         token: TokenController.tokenToCookie(accessToken),
-        user: userDto
+        user: userDto,
     };
-}
+};
 
 exports.logout = async (accessToken) => {
     const removedToken = await TokenController.removeToken(accessToken);
     if (!removedToken) throw ErrorHandler.BadRequest('Error logging out');
     return {removedToken};
-}
+};
 
 exports.refresh = async (accessToken) => {
     const userData = TokenController.validateToken(accessToken);
@@ -61,14 +61,14 @@ exports.refresh = async (accessToken) => {
 
     return {
         token: TokenController.tokenToCookie(accessToken),
-        user: userDto
+        user: userDto,
     };
-}
+};
 
 exports.getAllUsers = async () => {
     const users = await UserModel.find();
     return users.map((x) => new UserDto(x));
-}
+};
 
 
 exports.getUser = async (accessToken) => {
