@@ -7,9 +7,10 @@ const authMiddleware = require('../middlewares/auth-middleware');
 
 const {STATUS_CODES, sendError, sendResult, ROLES} = require('../utils/utilities');
 
+
 const router = express.Router();
 
-router.post('/sign-up', UserValidation.registerValidation, UserValidation.isAuthenticatedUser, (req, res, next) => {
+router.post('/sign-up', UserValidation.registerValidation, UserValidation.isValid, (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
 

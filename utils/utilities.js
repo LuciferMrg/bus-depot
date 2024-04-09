@@ -40,8 +40,8 @@ exports.sendError = (res, next, statusCode, error) => {
     if (statusCode === exports.STATUS_CODES.INTERNAL_SERVER_ERROR) console.log(error);
 
     res.status(statusCode).json({
-        error: {
-            message: error.message || 'Internal Server Error',
+        error: { //TODO
+            message: error.message || error.errors[0].msg || 'Internal Server Error',
         },
     });
 };
