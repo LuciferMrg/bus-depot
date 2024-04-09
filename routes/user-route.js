@@ -36,7 +36,7 @@ router.post('/logout', authMiddleware.isAuthenticated, (req, res, next) => {
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.get('/refresh', authMiddleware.isAuthenticated, (req, res, next) => {
+router.post('/refresh', authMiddleware.isAuthenticated, (req, res, next) => {
     const accessToken = req.cookies.accessToken;
 
     UserController.refresh(accessToken)
@@ -44,13 +44,13 @@ router.get('/refresh', authMiddleware.isAuthenticated, (req, res, next) => {
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.get('/users', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
+router.post('/users', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     UserController.getAllUsers()
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.get('/user', authMiddleware.isAuthenticated, (req, res, next) => {
+router.post('/user', authMiddleware.isAuthenticated, (req, res, next) => {
     const accessToken = req.cookies.accessToken;
 
     UserController.getUser(accessToken)
