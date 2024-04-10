@@ -39,3 +39,12 @@ exports.driverValidation = [
         .isLength({min: 10, max: 10})
         .isNumeric(),
 ];
+
+exports.busValidation = [
+    body('busNumber', 'Bus Number must be 10 digits.')
+        .isLength({min: 6, max: 6}),
+    body('seats', 'Seats must be a number.')
+        .isNumeric(),
+    body('model', 'Model must not exceed 50 characters.')
+        .isLength({max: 50}),
+];
