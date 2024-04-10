@@ -24,7 +24,7 @@ router.get('/drivers/:driverId', (req, res, next) => {
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.post('/drivers', validationMiddleware.driverValidation, validationMiddleware.isValid, (req, res, next) => {
+router.post('/drivers', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.driverValidation, validationMiddleware.isValid, (req, res, next) => {
     const {firstName, lastName, address, phoneNumber} = req.body;
 
     DriverController.addDriver(firstName, lastName, address, phoneNumber)
@@ -32,7 +32,7 @@ router.post('/drivers', validationMiddleware.driverValidation, validationMiddlew
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.put('/drivers/:driverId', validationMiddleware.driverValidation, validationMiddleware.isValid, (req, res, next) => {
+router.put('/drivers/:driverId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.driverValidation, validationMiddleware.isValid, (req, res, next) => {
     const driverId = req.params.driverId;
     const {firstName, lastName, address, phoneNumber} = req.body;
 
@@ -41,7 +41,7 @@ router.put('/drivers/:driverId', validationMiddleware.driverValidation, validati
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.delete('/drivers/:driverId', (req, res, next) => {
+router.delete('/drivers/:driverId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const driverId = req.params.driverId;
 
     DriverController.deleteDriver(driverId)
