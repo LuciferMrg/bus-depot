@@ -30,10 +30,6 @@ const ScheduleSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    availableSeats: {
-        type: Number,
-        required: true
-    }
 });
 
 module.exports = mongoose.model('Schedule', ScheduleSchema);
