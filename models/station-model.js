@@ -5,7 +5,8 @@ const StationSchema = new mongoose.Schema({
     stationName: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        maxLength: 100
     }
 });
 
