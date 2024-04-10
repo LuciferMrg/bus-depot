@@ -14,7 +14,7 @@ exports.isValid = (req, res, next) => {
     next();
 };
 
-const validator = value => {
+const withoutDigits = value => {
     if (/\d/.test(value)) {
         throw ErrorHandler.BadRequest('Invalid value.');
     }
@@ -29,10 +29,10 @@ exports.registerValidation = [
 exports.driverValidation = [
     body('firstName', 'First Name must not exceed 50 characters.')
         .isLength({max: 50})
-        .custom(validator),
+        .custom(withoutDigits),
     body('lastName', 'Last Name must not exceed 50 characters.')
         .isLength({max: 50})
-        .custom(validator),
+        .custom(withoutDigits),
     body('address', 'Address must not exceed 150 characters.')
         .isLength({max: 150}),
     body('phoneNumber', 'Phone Number must be 10 digits.')
