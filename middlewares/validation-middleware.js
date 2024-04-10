@@ -48,3 +48,8 @@ exports.busValidation = [
     body('model', 'Model must not exceed 50 characters.')
         .isLength({max: 50}),
 ];
+
+exports.stationValidation = [
+    body('stationName', 'Station Name must not exceed 100 characters.')
+        .isLength({max: 100}),
+];
