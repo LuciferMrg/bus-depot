@@ -53,3 +53,8 @@ exports.stationValidation = [
     body('stationName', 'Station Name must not exceed 100 characters.')
         .isLength({max: 100}),
 ];
+
+exports.scheduleValidation = [
+    body('departureTime', 'Station Name must not exceed 100 characters.').isDate(),
+    body('arrivalTime', 'Station Name must not exceed 100 characters.').isDate(),
+];
