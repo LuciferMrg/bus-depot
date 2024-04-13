@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const BusSchema = new mongoose.Schema({
     busNumber: {
         type: String,
-        length: 6,
+        length: 8,
         required: true,
         unique: true
     },
