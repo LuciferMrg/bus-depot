@@ -4,12 +4,13 @@ const ErrorHandler = require('../utils/error-handler');
 
 
 exports.getAllSchedules = async () => {
-    const schedule = await ScheduleModel.find();
+    const schedule = await ScheduleModel.find().populate(['bus', 'driver', 'fromStation', 'toStation']);
     return schedule;
 };
 
 exports.getSchedule = async (scheduleId) => {
     const schedule = await ScheduleModel.findById(scheduleId)
+        .populate(['bus', 'driver', 'fromStation', 'toStation'])
         .catch((error) => {
             throw ErrorHandler.BadRequest('Schedule is not found.', error);
         });
@@ -18,7 +19,7 @@ exports.getSchedule = async (scheduleId) => {
 };
 
 exports.addSchedule = async (busId, driverId, fromStationId, toStationId, departureTime, arrivalTime) => {
-    const schedule = new ScheduleModel.create({
+    const schedule = await ScheduleModel.create({
         bus: busId,
         driver: driverId,
         fromStation: fromStationId,
