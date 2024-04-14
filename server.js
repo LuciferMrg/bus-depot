@@ -5,6 +5,7 @@ const userRoute = require('./routes/user-route');
 const driverRoute = require('./routes/driver-route');
 const busRoute = require('./routes/bus-route');
 const stationRoute = require('./routes/station-route');
+const scheduleRoute = require('./routes/schedule-route');
 
 const server = express();
 
@@ -16,6 +17,7 @@ server.use('/api', userRoute);
 server.use('/api', driverRoute);
 server.use('/api', busRoute);
 server.use('/api', stationRoute);
+server.use('/api', scheduleRoute);
 
 
 module.exports = server;
