@@ -55,6 +55,6 @@ exports.stationValidation = [
 ];
 
 exports.scheduleValidation = [
-    body('departureTime', 'Station Name must not exceed 100 characters.').isDate(),
-    body('arrivalTime', 'Station Name must not exceed 100 characters.').isDate(),
+    body('departureTime', 'The date is incorrect.').toDate(),
+    body('arrivalTime', 'The date is incorrect.').toDate(),
 ];
