@@ -7,12 +7,13 @@ const {UserDto, comparePassword} = require("../utils/utilities");
 const ErrorHandler = require('../utils/error-handler');
 
 exports.register = async (username, password) => {
-    const user = await UserModel.create({
-        username,
-        password,
-    }).catch((error) => {
-        throw ErrorHandler.BadRequest("A user with the same name already exists.", error);
-    });
+    const user = await UserModel
+        .create({
+            username,
+            password,
+        }).catch((error) => {
+            throw ErrorHandler.BadRequest("A user with the same name already exists.", error);
+        });
     const userDto = new UserDto(user);
 
     const accessToken = TokenController.generateToken({...userDto});
@@ -72,7 +73,9 @@ exports.getAllUsers = async () => {
 
 
 exports.getUser = async (accessToken) => {
-    const user = await TokenModel.findOne({accessToken}).populate('user');
+    const user = await TokenModel
+        .findOne({accessToken})
+        .populate('user');
 
     if (!user) throw ErrorHandler.NotFound('UserModel is not found.');
 

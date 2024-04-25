@@ -4,11 +4,12 @@ const ErrorHandler = require('../utils/error-handler');
 
 
 exports.addStation = async (stationName) => {
-    const station = await StationModel.create({
-        stationName,
-    }).catch((error) => {
-        throw ErrorHandler.BadRequest("A station with the same name already exists.", error);
-    });
+    const station = await StationModel
+        .create({
+            stationName,
+        }).catch((error) => {
+            throw ErrorHandler.BadRequest("A station with the same name already exists.", error);
+        });
 
     return station._doc;
 };
@@ -19,7 +20,8 @@ exports.getAllStations = async () => {
 };
 
 exports.getStation = async (stationId) => {
-    const station = await StationModel.findById(stationId)
+    const station = await StationModel
+        .findById(stationId)
         .catch((error) => {
             throw ErrorHandler.BadRequest('Station is not found.', error);
         });
@@ -28,19 +30,21 @@ exports.getStation = async (stationId) => {
 };
 
 exports.updateStation = async (stationId, stationName) => {
-    const station = await StationModel.findByIdAndUpdate(stationId, {
-        stationName,
-    }, {
-        new: true,
-    }).catch((error) => {
-        throw ErrorHandler.BadRequest('Station is not found.', error);
-    });
+    const station = await StationModel
+        .findByIdAndUpdate(stationId, {
+            stationName,
+        }, {
+            new: true,
+        }).catch((error) => {
+            throw ErrorHandler.BadRequest('Station is not found.', error);
+        });
 
     return station;
 };
 
 exports.deleteStation = async (stationId) => {
-    const station = await StationModel.findByIdAndDelete(stationId)
+    const station = await StationModel
+        .findByIdAndDelete(stationId)
         .catch((error) => {
             throw ErrorHandler.BadRequest('Station is not found.', error);
         });
