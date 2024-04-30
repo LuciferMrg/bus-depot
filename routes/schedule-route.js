@@ -1,7 +1,6 @@
 const express = require('express');
 
 const authMiddleware = require('../middlewares/auth-middleware');
-const validationMiddleware = require('../middlewares/validation-middleware');
 
 const ScheduleController = require('../controllers/schedule-controller');
 
@@ -24,7 +23,7 @@ router.get('/schedules/:scheduleId', (req, res, next) => {
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.post('/schedules', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.scheduleValidation, validationMiddleware.isValid, (req, res, next) => {
+router.post('/schedules', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const {busId, driverId, fromStationId, toStationId, departureTime, arrivalTime} = req.body;
 
     ScheduleController.addSchedule(busId, driverId, fromStationId, toStationId, departureTime, arrivalTime)
@@ -32,7 +31,7 @@ router.post('/schedules', authMiddleware.isAuthenticated, authMiddleware.hasRole
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.put('/schedules/:scheduleId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.scheduleValidation, validationMiddleware.isValid, (req, res, next) => {
+router.put('/schedules/:scheduleId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const scheduleId = req.params.scheduleId;
     const {busId, driverId, fromStationId, toStationId, departureTime, arrivalTime} = req.body;
 

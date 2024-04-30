@@ -1,5 +1,6 @@
 const ScheduleModel = require('../models/schedule-model');
 
+const {scheduleSchema} = require("../utils/schemas");
 const ErrorHandler = require('../utils/error-handler');
 
 
@@ -20,6 +21,12 @@ exports.getSchedule = async (scheduleId) => {
 };
 
 exports.addSchedule = async (busId, driverId, fromStationId, toStationId, departureTime, arrivalTime) => {
+    try {
+        await scheduleSchema.validateAsync({departureTime, arrivalTime});
+    } catch (err) {
+        throw ErrorHandler.BadRequest(err.message, err);
+    }
+
     const schedule = await ScheduleModel
         .create({
             bus: busId,
@@ -36,6 +43,12 @@ exports.addSchedule = async (busId, driverId, fromStationId, toStationId, depart
 };
 
 exports.updateSchedule = async (scheduleId, busId, driverId, fromStationId, toStationId, departureTime, arrivalTime) => {
+    try {
+        await scheduleSchema.validateAsync({departureTime, arrivalTime});
+    } catch (err) {
+        throw ErrorHandler.BadRequest(err.message, err);
+    }
+
     const schedule = await ScheduleModel.findByIdAndUpdate(scheduleId, {
         bus: busId,
         driver: driverId,

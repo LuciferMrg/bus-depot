@@ -1,18 +1,8 @@
 const StationModel = require('../models/station-model');
 
+const {stationSchema} = require("../utils/schemas");
 const ErrorHandler = require('../utils/error-handler');
 
-
-exports.addStation = async (stationName) => {
-    const station = await StationModel
-        .create({
-            stationName,
-        }).catch((error) => {
-            throw ErrorHandler.BadRequest("A station with the same name already exists.", error);
-        });
-
-    return station._doc;
-};
 
 exports.getAllStations = async () => {
     const stations = await StationModel.find();
@@ -29,7 +19,30 @@ exports.getStation = async (stationId) => {
     return station;
 };
 
+exports.addStation = async (stationName) => {
+    try {
+        await stationSchema.validateAsync({stationName});
+    } catch (err) {
+        throw ErrorHandler.BadRequest(err.message, err);
+    }
+
+    const station = await StationModel
+        .create({
+            stationName,
+        }).catch((error) => {
+            throw ErrorHandler.BadRequest("A station with the same name already exists.", error);
+        });
+
+    return station._doc;
+};
+
 exports.updateStation = async (stationId, stationName) => {
+    try {
+        await stationSchema.validateAsync({stationName});
+    } catch (err) {
+        throw ErrorHandler.BadRequest(err.message, err);
+    }
+
     const station = await StationModel
         .findByIdAndUpdate(stationId, {
             stationName,

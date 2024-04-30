@@ -1,7 +1,6 @@
 const express = require('express');
 
 const authMiddleware = require('../middlewares/auth-middleware');
-const validationMiddleware = require('../middlewares/validation-middleware');
 
 const StationController = require('../controllers/station-controller');
 
@@ -24,7 +23,7 @@ router.get('/stations/:stationId', (req, res, next) => {
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.post('/stations', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.stationValidation, validationMiddleware.isValid, (req, res, next) => {
+router.post('/stations', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const {stationName} = req.body;
 
     StationController.addStation(stationName)
@@ -32,7 +31,7 @@ router.post('/stations', authMiddleware.isAuthenticated, authMiddleware.hasRole(
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.put('/stations/:stationId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.stationValidation, validationMiddleware.isValid, (req, res, next) => {
+router.put('/stations/:stationId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const stationId = req.params.stationId;
     const {stationName} = req.body;
 

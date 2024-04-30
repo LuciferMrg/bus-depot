@@ -1,7 +1,6 @@
 const express = require('express');
 
 const authMiddleware = require('../middlewares/auth-middleware');
-const validationMiddleware = require('../middlewares/validation-middleware');
 
 const DriverController = require('../controllers/driver-controller');
 
@@ -24,7 +23,7 @@ router.get('/drivers/:driverId', (req, res, next) => {
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.post('/drivers', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.driverValidation, validationMiddleware.isValid, (req, res, next) => {
+router.post('/drivers', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const {firstName, lastName, address, phoneNumber} = req.body;
 
     DriverController.addDriver(firstName, lastName, address, phoneNumber)
@@ -32,7 +31,7 @@ router.post('/drivers', authMiddleware.isAuthenticated, authMiddleware.hasRole(R
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.put('/drivers/:driverId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.driverValidation, validationMiddleware.isValid, (req, res, next) => {
+router.put('/drivers/:driverId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const driverId = req.params.driverId;
     const {firstName, lastName, address, phoneNumber} = req.body;
 

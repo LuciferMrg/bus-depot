@@ -3,7 +3,6 @@ const multer = require('multer');
 
 const UserController = require('../controllers/user-controller');
 
-const UserValidation = require('../middlewares/validation-middleware');
 const authMiddleware = require('../middlewares/auth-middleware');
 
 const {STATUS_CODES, sendError, sendResult, ROLES} = require('../utils/utilities');
@@ -14,7 +13,7 @@ const uploadImages = multer({storage: multerStorage, limit: multerLimits, fileFi
 
 const router = express.Router();
 
-router.post('/sign-up', UserValidation.registerValidation, UserValidation.isValid, (req, res, next) => {
+router.post('/sign-up', (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
 

@@ -1,7 +1,6 @@
 const express = require('express');
 
 const authMiddleware = require('../middlewares/auth-middleware');
-const validationMiddleware = require('../middlewares/validation-middleware');
 
 const BusController = require('../controllers/bus-controller');
 
@@ -24,7 +23,7 @@ router.get('/buses/:busId', (req, res, next) => {
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.post('/buses', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.busValidation, validationMiddleware.isValid, (req, res, next) => {
+router.post('/buses', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const {busNumber, seats, model} = req.body;
 
     BusController.addBus(busNumber, seats, model)
@@ -32,7 +31,7 @@ router.post('/buses', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROL
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
-router.put('/buses/:busId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.busValidation, validationMiddleware.isValid, (req, res, next) => {
+router.put('/buses/:busId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     const busId = req.params.busId;
     const {busNumber, seats, model} = req.body;
 

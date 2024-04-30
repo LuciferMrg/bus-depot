@@ -1,21 +1,8 @@
 const DriverModel = require('../models/driver-model');
 
+const {driverSchema} = require("../utils/schemas");
 const ErrorHandler = require('../utils/error-handler');
 
-
-exports.addDriver = async (firstName, lastName, address, phoneNumber) => {
-    const driver = await DriverModel
-        .create({
-            firstName,
-            lastName,
-            address,
-            phoneNumber,
-        }).catch((error) => {
-            throw ErrorHandler.BadRequest("A driver with the same name already exists.", error);
-        });
-
-    return driver._doc;
-};
 
 exports.getAllDrivers = async () => {
     const drivers = await DriverModel.find();
@@ -32,7 +19,43 @@ exports.getDriver = async (driverId) => {
     return driver;
 };
 
+exports.addDriver = async (firstName, lastName, address, phoneNumber) => {
+    try {
+        await driverSchema.validateAsync({
+            firstName,
+            lastName,
+            address,
+            phoneNumber,
+        });
+    } catch (err) {
+        throw ErrorHandler.BadRequest(err.message, err);
+    }
+
+    const driver = await DriverModel
+        .create({
+            firstName,
+            lastName,
+            address,
+            phoneNumber,
+        }).catch((error) => {
+            throw ErrorHandler.BadRequest("A driver with the same name already exists.", error);
+        });
+
+    return driver._doc;
+};
+
 exports.updateDriver = async (driverId, firstName, lastName, address, phoneNumber) => {
+    try {
+        await driverSchema.validateAsync({
+            firstName,
+            lastName,
+            address,
+            phoneNumber,
+        });
+    } catch (err) {
+        throw ErrorHandler.BadRequest(err.message, err);
+    }
+
     const driver = await DriverModel
         .findByIdAndUpdate(driverId, {
             firstName,

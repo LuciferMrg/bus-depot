@@ -3,10 +3,18 @@ const TokenController = require('../controllers/token-controller');
 const UserModel = require('../models/user-model');
 const TokenModel = require('../models/token-model');
 
+const {userSchema} = require('../utils/schemas');
 const {UserDto, comparePassword} = require("../utils/utilities");
 const ErrorHandler = require('../utils/error-handler');
 
+
 exports.register = async (username, password) => {
+    try {
+        await userSchema.validateAsync({username, password});
+    } catch (err) {
+        throw ErrorHandler.BadRequest(err.message, err);
+    }
+
     const user = await UserModel
         .create({
             username,
