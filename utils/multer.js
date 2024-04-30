@@ -4,10 +4,10 @@ const path = require('path');
 
 exports.multerStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'data/avatars/')
+        cb(null, 'data/avatars/');
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
 

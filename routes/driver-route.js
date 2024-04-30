@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/drivers', (req, res, next) => {
     DriverController.getAllDrivers()
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.get('/drivers/:driverId', (req, res, next) => {
@@ -20,7 +20,7 @@ router.get('/drivers/:driverId', (req, res, next) => {
 
     DriverController.getDriver(driverId)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/drivers', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
@@ -28,7 +28,7 @@ router.post('/drivers', authMiddleware.isAuthenticated, authMiddleware.hasRole(R
 
     DriverController.addDriver(firstName, lastName, address, phoneNumber)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.put('/drivers/:driverId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
@@ -37,7 +37,7 @@ router.put('/drivers/:driverId', authMiddleware.isAuthenticated, authMiddleware.
 
     DriverController.updateDriver(driverId, firstName, lastName, address, phoneNumber)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.delete('/drivers/:driverId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
@@ -45,7 +45,7 @@ router.delete('/drivers/:driverId', authMiddleware.isAuthenticated, authMiddlewa
 
     DriverController.deleteDriver(driverId)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 module.exports = router;

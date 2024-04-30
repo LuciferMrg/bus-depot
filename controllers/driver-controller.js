@@ -1,6 +1,6 @@
 const DriverModel = require('../models/driver-model');
 
-const {driverSchema} = require("../utils/schemas");
+const {driverSchema} = require('../utils/schemas');
 const ErrorHandler = require('../utils/error-handler');
 
 
@@ -38,7 +38,7 @@ exports.addDriver = async (firstName, lastName, address, phoneNumber) => {
             address,
             phoneNumber,
         }).catch((error) => {
-            throw ErrorHandler.BadRequest("A driver with the same name already exists.", error);
+            throw ErrorHandler.BadRequest('A driver with the same name already exists.', error);
         });
 
     return driver._doc;

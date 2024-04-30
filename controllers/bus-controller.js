@@ -1,6 +1,6 @@
 const BusModel = require('../models/bus-model');
 
-const {busSchema} = require("../utils/schemas");
+const {busSchema} = require('../utils/schemas');
 const ErrorHandler = require('../utils/error-handler');
 
 
@@ -36,7 +36,7 @@ exports.addBus = async (busNumber, seats, model) => {
             seats,
             model,
         }).catch((error) => {
-            throw ErrorHandler.BadRequest("A bus with the same name already exists.", error);
+            throw ErrorHandler.BadRequest('A bus with the same name already exists.', error);
         });
 
     return bus._doc;

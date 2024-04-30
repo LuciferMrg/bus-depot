@@ -4,7 +4,7 @@ const UserModel = require('../models/user-model');
 const TokenModel = require('../models/token-model');
 
 const {userSchema} = require('../utils/schemas');
-const {UserDto, comparePassword} = require("../utils/utilities");
+const {UserDto, comparePassword} = require('../utils/utilities');
 const ErrorHandler = require('../utils/error-handler');
 
 
@@ -20,7 +20,7 @@ exports.register = async (username, password) => {
             username,
             password,
         }).catch((error) => {
-            throw ErrorHandler.BadRequest("A user with the same name already exists.", error);
+            throw ErrorHandler.BadRequest('A user with the same name already exists.', error);
         });
     const userDto = new UserDto(user);
 

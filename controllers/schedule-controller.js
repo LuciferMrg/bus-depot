@@ -1,6 +1,6 @@
 const ScheduleModel = require('../models/schedule-model');
 
-const {scheduleSchema} = require("../utils/schemas");
+const {scheduleSchema} = require('../utils/schemas');
 const ErrorHandler = require('../utils/error-handler');
 
 
@@ -36,7 +36,7 @@ exports.addSchedule = async (busId, driverId, fromStationId, toStationId, depart
             departureTime,
             arrivalTime,
         }).catch((error) => {
-            throw ErrorHandler.BadRequest("Such a schedule already exists.", error);
+            throw ErrorHandler.BadRequest('Such a schedule already exists.', error);
         });
 
     return schedule;

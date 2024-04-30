@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/schedules', (req, res, next) => {
     ScheduleController.getAllSchedules()
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.get('/schedules/:scheduleId', (req, res, next) => {
@@ -20,7 +20,7 @@ router.get('/schedules/:scheduleId', (req, res, next) => {
 
     ScheduleController.getSchedule(scheduleId)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/schedules', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
@@ -28,7 +28,7 @@ router.post('/schedules', authMiddleware.isAuthenticated, authMiddleware.hasRole
 
     ScheduleController.addSchedule(busId, driverId, fromStationId, toStationId, departureTime, arrivalTime)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.put('/schedules/:scheduleId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
@@ -37,7 +37,7 @@ router.put('/schedules/:scheduleId', authMiddleware.isAuthenticated, authMiddlew
 
     ScheduleController.updateSchedule(scheduleId, busId, driverId, fromStationId, toStationId, departureTime, arrivalTime)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.delete('/schedules/:scheduleId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
@@ -45,7 +45,7 @@ router.delete('/schedules/:scheduleId', authMiddleware.isAuthenticated, authMidd
 
     ScheduleController.deleteSchedule(scheduleId)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 module.exports = router;

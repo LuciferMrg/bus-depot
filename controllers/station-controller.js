@@ -1,6 +1,6 @@
 const StationModel = require('../models/station-model');
 
-const {stationSchema} = require("../utils/schemas");
+const {stationSchema} = require('../utils/schemas');
 const ErrorHandler = require('../utils/error-handler');
 
 
@@ -30,7 +30,7 @@ exports.addStation = async (stationName) => {
         .create({
             stationName,
         }).catch((error) => {
-            throw ErrorHandler.BadRequest("A station with the same name already exists.", error);
+            throw ErrorHandler.BadRequest('A station with the same name already exists.', error);
         });
 
     return station._doc;

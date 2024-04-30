@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-// const path = require("path");
+const bcrypt = require('bcrypt');
+// const path = require('path');
 
 
 exports.STATUS_CODES = {
