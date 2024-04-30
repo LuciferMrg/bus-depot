@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/buses', (req, res, next) => {
     BusController.getAllBuses()
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.get('/buses/:busId', (req, res, next) => {
@@ -21,7 +21,7 @@ router.get('/buses/:busId', (req, res, next) => {
 
     BusController.getBus(busId)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/buses', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.busValidation, validationMiddleware.isValid, (req, res, next) => {
@@ -29,7 +29,7 @@ router.post('/buses', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROL
 
     BusController.addBus(busNumber, seats, model)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.put('/buses/:busId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.busValidation, validationMiddleware.isValid, (req, res, next) => {
@@ -38,7 +38,7 @@ router.put('/buses/:busId', authMiddleware.isAuthenticated, authMiddleware.hasRo
 
     BusController.updateBus(busId, busNumber, seats, model)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.delete('/buses/:busId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
@@ -46,7 +46,7 @@ router.delete('/buses/:busId', authMiddleware.isAuthenticated, authMiddleware.ha
 
     BusController.deleteBus(busId)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 module.exports = router;

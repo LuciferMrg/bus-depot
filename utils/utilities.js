@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
+// const path = require("path");
 
 
 exports.STATUS_CODES = {
     CONTINUE: 100,
-    OK: 200,
     SUCCESS: 200,
     REDIRECTION: 300,
     BAD_REQUEST: 400,
@@ -16,8 +16,7 @@ exports.STATUS_CODES = {
 };
 
 exports.ROLES = {
-    ADMIN: 'admin',
-    USER: 'user',
+    ADMIN: 'admin', USER: 'user',
 };
 
 exports.UserDto = class {
@@ -46,9 +45,11 @@ exports.sendResult = (res, next, statusCode, result) => {
 };
 
 exports.sendError = (res, next, statusCode, error) => {
+    statusCode = error.status || exports.STATUS_CODES.INTERNAL_SERVER_ERROR;
+
     if (statusCode === exports.STATUS_CODES.INTERNAL_SERVER_ERROR) console.log(error);
 
-    res.status(statusCode).json({
+    res.status(error.status || statusCode).json({
         error: { //TODO
             message: error.message || error.errors[0].msg || 'Internal Server Error',
         },

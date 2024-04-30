@@ -20,7 +20,7 @@ router.post('/sign-up', UserValidation.registerValidation, UserValidation.isVali
 
     UserController.register(username, password)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/sign-in', (req, res, next) => {
@@ -29,7 +29,7 @@ router.post('/sign-in', (req, res, next) => {
 
     UserController.login(username, password)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/logout', authMiddleware.isAuthenticated, (req, res, next) => {
@@ -37,7 +37,7 @@ router.post('/logout', authMiddleware.isAuthenticated, (req, res, next) => {
 
     UserController.logout(accessToken)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/refresh', authMiddleware.isAuthenticated, (req, res, next) => {
@@ -45,13 +45,13 @@ router.post('/refresh', authMiddleware.isAuthenticated, (req, res, next) => {
 
     UserController.refresh(accessToken)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/users', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
     UserController.getAllUsers()
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/user', authMiddleware.isAuthenticated, (req, res, next) => {
@@ -59,7 +59,6 @@ router.post('/user', authMiddleware.isAuthenticated, (req, res, next) => {
 
     UserController.getUser(accessToken)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
         .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 

@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/stations', (req, res, next) => {
     StationController.getAllStations()
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.get('/stations/:stationId', (req, res, next) => {
@@ -21,7 +21,7 @@ router.get('/stations/:stationId', (req, res, next) => {
 
     StationController.getStation(stationId)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.post('/stations', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.stationValidation, validationMiddleware.isValid, (req, res, next) => {
@@ -29,7 +29,7 @@ router.post('/stations', authMiddleware.isAuthenticated, authMiddleware.hasRole(
 
     StationController.addStation(stationName)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.put('/stations/:stationId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), validationMiddleware.stationValidation, validationMiddleware.isValid, (req, res, next) => {
@@ -38,7 +38,7 @@ router.put('/stations/:stationId', authMiddleware.isAuthenticated, authMiddlewar
 
     StationController.updateStation(stationId, stationName)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 router.delete('/stations/:stationId', authMiddleware.isAuthenticated, authMiddleware.hasRole(ROLES.ADMIN), (req, res, next) => {
@@ -46,7 +46,7 @@ router.delete('/stations/:stationId', authMiddleware.isAuthenticated, authMiddle
 
     StationController.deleteStation(stationId)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
-        .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 module.exports = router;
