@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 
 const UserController = require('../controllers/user-controller');
 
@@ -6,7 +7,10 @@ const UserValidation = require('../middlewares/validation-middleware');
 const authMiddleware = require('../middlewares/auth-middleware');
 
 const {STATUS_CODES, sendError, sendResult, ROLES} = require('../utils/utilities');
+const {multerStorage, multerLimits, imageFilter} = require('../utils/multer');
 
+
+const uploadImages = multer({storage: multerStorage, limit: multerLimits, fileFilter: imageFilter});
 
 const router = express.Router();
 
@@ -56,6 +60,16 @@ router.post('/user', authMiddleware.isAuthenticated, (req, res, next) => {
     UserController.getUser(accessToken)
         .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
         .catch((error) => sendError(res, next, error.status || STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
+});
+
+router.put('/user', uploadImages.single('avatar'), authMiddleware.isAuthenticated, (req, res, next) => {
+    const accessToken = req.cookies.accessToken;
+    const avatar = req.file;
+
+    UserController.updateUser(accessToken, avatar)
+        .then((result) => sendResult(res, next, STATUS_CODES.SUCCESS, result))
+        .catch((error) => sendError(res, next, STATUS_CODES.INTERNAL_SERVER_ERROR, error));
 });
 
 module.exports = router;

@@ -73,12 +73,36 @@ exports.getAllUsers = async () => {
 
 
 exports.getUser = async (accessToken) => {
-    const user = await TokenModel
+    const token = await TokenModel
         .findOne({accessToken})
         .populate('user');
 
-    if (!user) throw ErrorHandler.NotFound('UserModel is not found.');
+    if (!token) throw ErrorHandler.NotFound('User is not found.');
 
-    const userDto = new UserDto(user.user);
-    return userDto;
+    const userDto = new UserDto(token.user);
+    return {
+        ...userDto,
+        // filePath: token.user.avatarPath || null,
+    };
+};
+
+exports.updateUser = async (accessToken, avatar) => {
+    const token = await TokenModel
+        .findOne({accessToken})
+        .populate('user');
+
+    if (!token) throw ErrorHandler.NotFound('User is not found.');
+
+    const userId = token.user.id;
+
+    const user = await UserModel
+        .findByIdAndUpdate(userId, {
+            avatarPath: avatar.path,
+        }, {
+            new: true,
+        }).catch((error) => {
+            throw ErrorHandler.BadRequest('User is not found.', error);
+        });
+
+    return user;
 };

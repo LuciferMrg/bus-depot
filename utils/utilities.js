@@ -32,8 +32,17 @@ exports.UserDto = class {
 
 exports.sendResult = (res, next, statusCode, result) => {
     res.status(statusCode);
-    if ("token" in result) res.cookie(...result.token);
+    if ('token' in result) res.cookie(...result.token);
+    // if ('filePath' in result) {
+    //     console.log(result.filePath);
+    //     res.sendFile(result.filePath, {
+    //         root: path.join(__dirname.slice(0, -5)),
+    //     }, function (err) {
+    //         console.log(err);
+    //     });
+    // }
     res.json(result);
+
 };
 
 exports.sendError = (res, next, statusCode, error) => {
