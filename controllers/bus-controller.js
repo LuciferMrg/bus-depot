@@ -1,6 +1,6 @@
 const BusModel = require('../models/bus-model');
 
-const {busSchema, driverSchema} = require("../utils/schemas");
+const {busSchema} = require("../utils/schemas");
 const ErrorHandler = require('../utils/error-handler');
 
 
